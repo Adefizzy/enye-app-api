@@ -36,10 +36,13 @@ exports.users = functions.https.onRequest(app);
 exports.addUserId = functions.database
   .ref("/users/{usersId}")
   .onCreate((snapshot, context) => {
-    // const pushId = context.params.pushId
+    const pushId = context.params.usersId;
+    // const NAMESPACE = `256eeca98fa1348090565a`;
+    const uuid = uuidv5(
+      `https://enye-app.firebaseapp.com/${pushId}`,
+      uuidv5.URL
+    );
 
-    const uuid = uuidv5("https://enye-app.firebaseapp.com", uuidv5.URL);
-    
-    return snapshot.ref.update({userId: uuid});
+    return snapshot.ref.update({ userId: uuid });
     // return snapshot.ref.parent.child("userid").update({ userId });
   });
